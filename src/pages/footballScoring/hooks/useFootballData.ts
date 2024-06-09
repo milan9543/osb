@@ -1,5 +1,5 @@
 import { pb } from '@/api/pocketbase';
-import { FootballGame } from '@/types/football';
+import { FootballGame, FootballGameEvent } from '@/types/football';
 import { useQuery, useMutation } from '@tanstack/react-query';
 
 export const useFootballData = (id: string) => {
@@ -17,5 +17,37 @@ export const useFootballData = (id: string) => {
       pb.collection('footballGame').update(id, updatedData),
   });
 
-  return { game: data, refetchGame: refetch, mutate };
+  const updateGameWithEvent = (event: FootballGameEvent) => {
+    if (!data) {
+      return;
+    }
+    const isHomePlayer = !!data.expand.homeTeam.expand.players.find(
+      (item) => item.id === event.player
+    );
+    console.log(isHomePlayer);
+    let homeScore = data.homeScore;
+    let visitorScore = data.visitorScore;
+    if (['GOAL', 'PENALTY_SCORED'].includes(event.type)) {
+      if (isHomePlayer) {
+        homeScore += 1;
+      } else {
+        visitorScore += 1;
+      }
+    }
+    if (event.type === 'OWN_GOAL') {
+      if (isHomePlayer) {
+        visitorScore += 1;
+      } else {
+        homeScore += 1;
+      }
+    }
+
+    mutate({
+      ...data,
+      homeScore,
+      visitorScore,
+    });
+  };
+
+  return { game: data, refetchGame: refetch, mutate, updateGameWithEvent };
 };

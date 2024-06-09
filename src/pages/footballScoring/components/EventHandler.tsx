@@ -5,37 +5,51 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import {
-  FootballEventType,
   FootballEventTypes,
   FootballGame,
+  FootballGameEventCreate,
 } from '@/types/football';
 import { eventIcon } from '@/util/eventIcon';
 import { eventLabel } from '@/util/eventLabel';
 import { clsx } from 'clsx';
 import { HelpCircle } from 'lucide-react';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
+import { useFootballEvent } from '../hooks/useFootballEvent';
 
 type EventHandlerProps = {
   game: FootballGame;
-  onChange: (event: FootballEventType | null) => void;
+  onEvent: (event: FootballGameEventCreate) => void;
 };
 
-export const EventHandler: FC<EventHandlerProps> = ({ game, onChange }) => {
-  const [selectedEventType, setSelectedEventType] =
-    useState<FootballEventType | null>(null);
-  const [search, setSearch] = useState('');
-  useEffect(() => {
-    if (!selectedEventType) {
-      return;
-    }
-    const inputEl = document.getElementById('player-selector-search');
-    if (inputEl) {
-      inputEl.focus();
-    }
-  }, [selectedEventType]);
+export const EventHandler: FC<EventHandlerProps> = ({ game, onEvent }) => {
+  const {
+    selectedEventType,
+    setSelectedEventType,
+    search,
+    setSearch,
+    isGameRunning,
+    currentMinute,
+  } = useFootballEvent(game);
 
   const homeTeam = game.expand.homeTeam;
   const visitorTeam = game.expand.visitorTeam;
+
+  const handleEventFinalize = (playerId: string) => {
+    console.log(selectedEventType);
+    if (!selectedEventType) {
+      return;
+    }
+    // TODO handle sub
+    onEvent({
+      type: selectedEventType,
+      minute: currentMinute,
+      player: playerId,
+      game: game.id,
+    });
+
+    setSelectedEventType(null);
+  };
+
   return (
     <Card className={clsx('col-span-8')}>
       <div className={cn('flex', 'flex-row', 'gap-2')}>
@@ -47,6 +61,7 @@ export const EventHandler: FC<EventHandlerProps> = ({ game, onChange }) => {
             <div className={clsx('grid', 'grid-cols-4', 'gap-2', 'w-full')}>
               {FootballEventTypes.map((item) => (
                 <Button
+                  disabled={!isGameRunning}
                   key={item}
                   variant="secondary"
                   className={clsx(
@@ -155,6 +170,7 @@ export const EventHandler: FC<EventHandlerProps> = ({ game, onChange }) => {
                           <Button
                             variant="outline"
                             className={cn('py-8', 'w-full', 'text-left')}
+                            onClick={() => handleEventFinalize(playerItem.id)}
                           >
                             <div
                               className={cn(

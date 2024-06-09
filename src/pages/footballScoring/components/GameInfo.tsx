@@ -72,6 +72,12 @@ export const GameInfo: FC<{ game: FootballGame }> = ({ game }) => {
                   {game.homeScore}
                 </td>
                 <td
+                  className={cn('w-4', 'text-4xl', 'font-thin')}
+                  align="center"
+                >
+                  -
+                </td>
+                <td
                   className={cn('w-10', 'text-4xl', 'font-medium')}
                   align="center"
                 >

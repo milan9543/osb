@@ -36,14 +36,20 @@ export type FootballPlayer = {
 } & PocketbaseFields;
 
 export type FootballGameEvent = {
-  type: FootballEventType;
-  player: string;
-  subPlayerIn: string;
   expand: {
     player: FootballPlayer;
-    subPlayerIn: FootballPlayer;
+    secondaryPlayer: FootballPlayer;
   };
-} & PocketbaseFields;
+} & PocketbaseFields &
+  FootballGameEventCreate;
+
+export type FootballGameEventCreate = {
+  type: FootballEventType;
+  player: string;
+  secondaryPlayer?: string;
+  minute: number;
+  game: string;
+};
 
 export type FootballGame = {
   homeTeam: string;
@@ -58,7 +64,6 @@ export type FootballGame = {
   expand: {
     homeTeam: FootballTeam;
     visitorTeam: FootballTeam;
-    events: FootballGameEvent[];
   };
 } & PocketbaseFields;
 
