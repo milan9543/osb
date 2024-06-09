@@ -46,6 +46,7 @@ export const getPeriodChangedData = (data: FootballGame): FootballGame => {
   return {
     ...data,
     currentPeriod: data.currentPeriod ? getNextPeriod(data) : null,
+    currentPeriodAddedTime: 0,
     currentPeriodStarted: new Date().toUTCString(),
   };
 };
