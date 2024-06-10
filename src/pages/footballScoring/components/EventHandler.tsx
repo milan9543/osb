@@ -66,6 +66,7 @@ export const EventHandler: FC<EventHandlerProps> = ({ game, onEvent }) => {
     setSearch,
     isGameRunning,
     currentMinute,
+    currentMinuteAddedTime,
     focusSearchInput,
   } = useFootballEvent(game);
 
@@ -90,6 +91,7 @@ export const EventHandler: FC<EventHandlerProps> = ({ game, onEvent }) => {
       onEvent({
         type: selectedEventType,
         minute: currentMinute,
+        addedTimeMinute: currentMinuteAddedTime,
         player: primaryPlayerId,
         secondaryPlayer: secondaryPlayer,
         game: game.id,
@@ -102,8 +104,8 @@ export const EventHandler: FC<EventHandlerProps> = ({ game, onEvent }) => {
   };
 
   return (
-    <Card className={clsx('col-span-8')}>
-      <div className={cn('flex', 'flex-row', 'gap-2')}>
+    <Card className={clsx('col-span-12', 'md:col-span-8')}>
+      <div className={cn('flex', 'flex-col', 'md:flex-row', 'gap-2')}>
         <div className={cn('w-full')}>
           <CardHeader>
             <CardTitle>Event handler</CardTitle>

@@ -23,8 +23,7 @@ export const FootballScoringPage = () => {
   useEffect(() => {
     const unsubscribePromise = pb
       .collection('footballGame')
-      .subscribe(id, (data) => {
-        console.log(data);
+      .subscribe(id, () => {
         refetchGame();
       });
     return () => {
@@ -40,9 +39,10 @@ export const FootballScoringPage = () => {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleExtraTimeChange = (extraTime: number) => {
-    // TODO
+  const handleAddedTimeChange = (addedTime: number) => {
+    if (game) {
+      updatGame({ ...game, currentPeriodAddedTime: addedTime });
+    }
   };
 
   return (
@@ -53,7 +53,7 @@ export const FootballScoringPage = () => {
           <GameControl
             game={game}
             onPeriodChange={handlePeriodChange}
-            onExtraTimeChange={handleExtraTimeChange}
+            onExtraTimeChange={handleAddedTimeChange}
           />
           <EventList gameId={game.id} />
           <EventHandler game={game} onEvent={handleEventAdd} />

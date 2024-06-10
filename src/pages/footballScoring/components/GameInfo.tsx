@@ -12,7 +12,7 @@ export const GameInfo: FC<{ game: FootballGame }> = ({ game }) => {
     game.currentPeriod
   );
   return (
-    <Card className={cn('col-span-3')}>
+    <Card className={cn('col-span-12', 'md:col-span-3')}>
       <CardHeader>
         <CardTitle>Game info</CardTitle>
       </CardHeader>
@@ -61,6 +61,9 @@ export const GameInfo: FC<{ game: FootballGame }> = ({ game }) => {
             </div>
             {showClock && <p className={cn('text-xl')}>{clockString}</p>}
           </div>
+          {!!game.currentPeriodAddedTime && (
+            <div>Added time: {game.currentPeriodAddedTime}'</div>
+          )}
           <table className={cn('w-full')}>
             <tbody>
               <tr>

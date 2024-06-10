@@ -69,7 +69,12 @@ export const EventListItem: FC<{ event: FootballGameEvent }> = ({ event }) => {
             </div>
           </div>
           <div className={cn('text-2xl', 'font-thin', 'text-muted-foreground')}>
-            <p>{event.minute}'</p>
+            <div className={cn('flex', 'items-start')}>
+              {event.minute}'
+              {!!event.addedTimeMinute && (
+                <span className={cn('text-sm')}>+{event.addedTimeMinute}</span>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -24,7 +24,6 @@ export const useFootballData = (id: string) => {
     const isHomePlayer = !!data.expand.homeTeam.expand.players.find(
       (item) => item.id === event.player
     );
-    console.log(isHomePlayer);
     let homeScore = data.homeScore;
     let visitorScore = data.visitorScore;
     if (['GOAL', 'PENALTY_SCORED'].includes(event.type)) {

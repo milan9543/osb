@@ -32,7 +32,7 @@ export const EventList: FC<{ gameId: string }> = ({ gameId }) => {
   }, []);
 
   return (
-    <Card className={cn('col-span-4', 'row-span-3')}>
+    <Card className={cn('col-span-12', 'md:col-span-4', 'row-span-3')}>
       <CardHeader>
         <CardTitle>Events</CardTitle>
       </CardHeader>

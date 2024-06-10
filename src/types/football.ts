@@ -48,6 +48,7 @@ export type FootballGameEventCreate = {
   player: string;
   secondaryPlayer?: string;
   minute: number;
+  addedTimeMinute?: number;
   game: string;
 };
 

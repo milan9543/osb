@@ -19,7 +19,7 @@ export const GameControl: FC<{
   const nextPeriod = getNextPeriod(game);
 
   return (
-    <Card className={cn('col-span-5')}>
+    <Card className={cn('col-span-12', 'md:col-span-5')}>
       <CardHeader>
         <CardTitle>Game control</CardTitle>
       </CardHeader>
@@ -30,10 +30,10 @@ export const GameControl: FC<{
             <p>{nextPeriod ? getPeriodLabel[nextPeriod] : '-'}</p>
           </div>
 
-          <div>
+          <div className={cn('flex', 'flex-col', 'xl:flex-row', 'gap-2')}>
             <p className={cn('text-muted-foreground')}>Extra time</p>
             <div className={cn('flex', 'flex-row', 'gap-2')}>
-              {[...Array(7).keys()].map((item) => (
+              {[...Array(8).keys()].map((item) => (
                 <Button
                   key={item}
                   variant={item ? 'secondary' : 'destructive'}
@@ -44,14 +44,20 @@ export const GameControl: FC<{
                   {item ? `+${item}` : <X size="16" />}
                 </Button>
               ))}
+            </div>
+            <div>
               <form
                 onSubmit={(ev) => {
                   ev.preventDefault();
                   setCustomExtra('');
+                  onExtraTimeChange(
+                    parseInt(ev.currentTarget['custom-added-time'].value, 10)
+                  );
                 }}
                 className={cn('w-full')}
               >
                 <Input
+                  id="custom-added-time"
                   type="number"
                   placeholder="Custom value"
                   value={customExtra}
