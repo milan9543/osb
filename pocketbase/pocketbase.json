@@ -263,6 +263,20 @@
             },
             {
                 "system": false,
+                "id": "6czwt7zj",
+                "name": "addedTimeMinute",
+                "type": "number",
+                "required": false,
+                "presentable": false,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "noDecimal": false
+                }
+            },
+            {
+                "system": false,
                 "id": "etxp1wap",
                 "name": "player",
                 "type": "relation",
