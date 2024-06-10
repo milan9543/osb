@@ -2,11 +2,11 @@ import { SkipForward, X } from 'lucide-react';
 import { getPeriodLabel } from '@/util/periodLabel';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { clsx } from 'clsx';
 import { Input } from '@/components/ui/input';
 import { FC, useState } from 'react';
-import { FootballGame, FootballPeriod } from '@/types/football';
+import { FootballGame } from '@/types/football';
 import { getNextPeriod } from '../util/footballHelper';
+import { cn } from '@/lib/utils';
 
 export const GameControl: FC<{
   game: FootballGame;
@@ -19,26 +19,26 @@ export const GameControl: FC<{
   const nextPeriod = getNextPeriod(game);
 
   return (
-    <Card className={clsx('col-span-5')}>
+    <Card className={cn('col-span-5')}>
       <CardHeader>
         <CardTitle>Game control</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className={clsx('flex flex-col', 'gap-4')}>
-          <div className={clsx('flex', 'flex-row', 'justify-between')}>
+        <div className={cn('flex flex-col', 'gap-4')}>
+          <div className={cn('flex', 'flex-row', 'justify-between')}>
             <p>Next period:</p>
             <p>{nextPeriod ? getPeriodLabel[nextPeriod] : '-'}</p>
           </div>
 
           <div>
-            <p className={clsx('text-muted-foreground')}>Extra time</p>
-            <div className={clsx('flex', 'flex-row', 'gap-2')}>
+            <p className={cn('text-muted-foreground')}>Extra time</p>
+            <div className={cn('flex', 'flex-row', 'gap-2')}>
               {[...Array(7).keys()].map((item) => (
                 <Button
                   key={item}
                   variant={item ? 'secondary' : 'destructive'}
                   size="icon"
-                  className={clsx('min-w-8')}
+                  className={cn('min-w-8')}
                   onClick={() => onExtraTimeChange(item)}
                 >
                   {item ? `+${item}` : <X size="16" />}
@@ -49,6 +49,7 @@ export const GameControl: FC<{
                   ev.preventDefault();
                   setCustomExtra('');
                 }}
+                className={cn('w-full')}
               >
                 <Input
                   type="number"
@@ -66,7 +67,7 @@ export const GameControl: FC<{
               onClick={() => setIsConfirming(true)}
             >
               <div
-                className={clsx(
+                className={cn(
                   'w-full',
                   'flex',
                   'flex-row',
@@ -82,17 +83,15 @@ export const GameControl: FC<{
           )}
           {isConfirming && (
             <div>
-              <p
-                className={clsx('text-center', 'font-bold', 'text-2xl', 'p-4')}
-              >
+              <p className={cn('text-center', 'font-bold', 'text-2xl', 'p-4')}>
                 Are you sure?
               </p>
-              <div className={clsx('flex', 'flex-row', 'gap-2')}>
+              <div className={cn('flex', 'flex-row', 'gap-2')}>
                 <Button
                   variant="secondary"
                   size="lg"
                   onClick={() => setIsConfirming(false)}
-                  className={clsx('w-full')}
+                  className={cn('w-full')}
                 >
                   Cancel
                 </Button>
@@ -102,7 +101,7 @@ export const GameControl: FC<{
                     setIsConfirming(false);
                     onPeriodChange();
                   }}
-                  className={clsx('w-full')}
+                  className={cn('w-full')}
                 >
                   Confirm
                 </Button>

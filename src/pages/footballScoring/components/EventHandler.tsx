@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import {
+  FootballEventType,
   FootballEventTypes,
   FootballGame,
   FootballGameEventCreate,
@@ -12,8 +13,8 @@ import {
 import { eventIcon } from '@/util/eventIcon';
 import { eventLabel } from '@/util/eventLabel';
 import { clsx } from 'clsx';
-import { HelpCircle } from 'lucide-react';
-import { FC } from 'react';
+import { HelpCircle, UserX } from 'lucide-react';
+import { FC, useState } from 'react';
 import { useFootballEvent } from '../hooks/useFootballEvent';
 
 type EventHandlerProps = {
@@ -21,7 +22,43 @@ type EventHandlerProps = {
   onEvent: (event: FootballGameEventCreate) => void;
 };
 
+const canSelectSecondaryPlayer: FootballEventType[] = [
+  'GOAL',
+  'INJURY',
+  'SUBSTITUTION',
+];
+
+const getPlayerSelectorTitle = (
+  type: FootballEventType | null,
+  hasPrimaryPlayerSelected: boolean
+): string => {
+  switch (type) {
+    case 'GOAL':
+    case 'PENALTY_SCORED':
+      return hasPrimaryPlayerSelected ? 'Player assisted' : 'Player scored';
+    case 'OWN_GOAL':
+      return 'Own goal scorer';
+    case 'SUBSTITUTION':
+      return hasPrimaryPlayerSelected
+        ? 'Player coming on'
+        : 'Player coming off';
+    case 'YELLOW_CARD':
+      return 'Yellow card recipient';
+    case 'RED_CARD':
+      return 'Red card recipient';
+    case 'INJURY':
+      return hasPrimaryPlayerSelected
+        ? 'Player coming on'
+        : 'Injured player coming off';
+    case 'PENALTY_MISS':
+      return 'Player who missed the penalty';
+    default:
+      return 'Player selector';
+  }
+};
+
 export const EventHandler: FC<EventHandlerProps> = ({ game, onEvent }) => {
+  const [primaryPlayer, setPrimaryPlayer] = useState<string | null>(null);
   const {
     selectedEventType,
     setSelectedEventType,
@@ -29,25 +66,39 @@ export const EventHandler: FC<EventHandlerProps> = ({ game, onEvent }) => {
     setSearch,
     isGameRunning,
     currentMinute,
+    focusSearchInput,
   } = useFootballEvent(game);
 
   const homeTeam = game.expand.homeTeam;
   const visitorTeam = game.expand.visitorTeam;
 
-  const handleEventFinalize = (playerId: string) => {
-    console.log(selectedEventType);
+  const handleEventFinalize = (playerId: string | undefined) => {
     if (!selectedEventType) {
       return;
     }
-    // TODO handle sub
-    onEvent({
-      type: selectedEventType,
-      minute: currentMinute,
-      player: playerId,
-      game: game.id,
-    });
 
-    setSelectedEventType(null);
+    const needSecondPlayer =
+      canSelectSecondaryPlayer.includes(selectedEventType);
+
+    if (needSecondPlayer && !primaryPlayer && playerId) {
+      setPrimaryPlayer(playerId);
+      focusSearchInput();
+    }
+    if (!needSecondPlayer || primaryPlayer) {
+      const primaryPlayerId = primaryPlayer ?? (playerId as string);
+      const secondaryPlayer = primaryPlayer ? playerId : undefined;
+      onEvent({
+        type: selectedEventType,
+        minute: currentMinute,
+        player: primaryPlayerId,
+        secondaryPlayer: secondaryPlayer,
+        game: game.id,
+      });
+      setPrimaryPlayer(null);
+      setSelectedEventType(null);
+    }
+
+    setSearch('');
   };
 
   return (
@@ -61,8 +112,8 @@ export const EventHandler: FC<EventHandlerProps> = ({ game, onEvent }) => {
             <div className={clsx('grid', 'grid-cols-4', 'gap-2', 'w-full')}>
               {FootballEventTypes.map((item) => (
                 <Button
-                  disabled={!isGameRunning}
                   key={item}
+                  disabled={!isGameRunning || !!primaryPlayer}
                   variant="secondary"
                   className={clsx(
                     'col-span-1',
@@ -98,7 +149,9 @@ export const EventHandler: FC<EventHandlerProps> = ({ game, onEvent }) => {
         </div>
         <div className={cn('w-full')}>
           <CardHeader>
-            <CardTitle>Player selector</CardTitle>
+            <CardTitle>
+              {getPlayerSelectorTitle(selectedEventType, !!primaryPlayer)}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className={cn('w-full', 'gap-4', 'flex', 'flex-col')}>
@@ -108,6 +161,7 @@ export const EventHandler: FC<EventHandlerProps> = ({ game, onEvent }) => {
                 disabled={!selectedEventType}
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
+                autoComplete="off"
               />
               {!selectedEventType && (
                 <div
@@ -130,6 +184,28 @@ export const EventHandler: FC<EventHandlerProps> = ({ game, onEvent }) => {
               {selectedEventType && (
                 <ScrollArea className={cn('h-52')}>
                   <ul>
+                    {!!primaryPlayer && (
+                      <Button
+                        variant="outline"
+                        className={cn('py-8', 'w-full', 'text-left')}
+                        onClick={() => handleEventFinalize(undefined)}
+                      >
+                        <div
+                          className={cn(
+                            'w-full',
+                            'text-xl',
+                            'font-thin',
+                            'text-muted-foreground',
+                            'flex',
+                            'items-center',
+                            'gap-4'
+                          )}
+                        >
+                          <UserX />
+                          <p>No assisting player</p>
+                        </div>
+                      </Button>
+                    )}
                     {[
                       ...(homeTeam?.expand?.players.map((item) => ({
                         id: item.id,
@@ -169,8 +245,16 @@ export const EventHandler: FC<EventHandlerProps> = ({ game, onEvent }) => {
                         <li key={playerItem.id} className={cn('p-1')}>
                           <Button
                             variant="outline"
-                            className={cn('py-8', 'w-full', 'text-left')}
+                            className={cn(
+                              'py-8',
+                              'w-full',
+                              'text-left',
+                              primaryPlayer === playerItem.id
+                                ? 'selected-button'
+                                : ''
+                            )}
                             onClick={() => handleEventFinalize(playerItem.id)}
+                            disabled={playerItem.id === primaryPlayer}
                           >
                             <div
                               className={cn(

@@ -16,11 +16,15 @@ export const useFootballEvent = (game: FootballGame) => {
     if (!selectedEventType) {
       return;
     }
+    focusSearchInput();
+  }, [selectedEventType]);
+
+  const focusSearchInput = () => {
     const inputEl = document.getElementById('player-selector-search');
     if (inputEl) {
       inputEl.focus();
     }
-  }, [selectedEventType]);
+  };
 
   return {
     selectedEventType,
@@ -37,5 +41,6 @@ export const useFootballEvent = (game: FootballGame) => {
         'EXTRA_SECOND',
         'PENALTIES',
       ].includes(game.currentPeriod),
+    focusSearchInput,
   };
 };

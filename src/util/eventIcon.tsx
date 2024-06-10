@@ -25,7 +25,7 @@ export const eventIcon: Record<FootballEventType, JSX.Element> = {
       size={32}
     />
   ),
-  INJURY: <Cross size={32} className={cn('text-red-400')} />,
+  INJURY: <Cross size={32} className={cn('text-red-400')} strokeWidth={1} />,
   PENALTY_MISS: <PenaltyMissedIcon size={32} className={cn('fill-red-600')} />,
   PENALTY_SCORED: <PenaltyIcon className={cn('fill-green-600')} size={32} />,
   SUBSTITUTION: (

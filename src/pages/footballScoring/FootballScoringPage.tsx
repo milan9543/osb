@@ -55,7 +55,7 @@ export const FootballScoringPage = () => {
             onPeriodChange={handlePeriodChange}
             onExtraTimeChange={handleExtraTimeChange}
           />
-          <EventList />
+          <EventList gameId={game.id} />
           <EventHandler game={game} onEvent={handleEventAdd} />
         </>
       )}
