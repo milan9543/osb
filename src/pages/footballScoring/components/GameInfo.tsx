@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 export const GameInfo: FC<{ game: FootballGame }> = ({ game }) => {
-  const { clockString, showClock } = useGameClock(
+  const { clockString, isGameRunning: showClock } = useGameClock(
     dayjs(game.currentPeriodStarted),
     game.currentPeriod
   );
@@ -67,7 +67,7 @@ export const GameInfo: FC<{ game: FootballGame }> = ({ game }) => {
           <table className={cn('w-full')}>
             <tbody>
               <tr>
-                <td>{game.expand.homeTeam.shortName}</td>
+                <td>{game.expand.homeTeam.expand.team.shortName}</td>
                 <td
                   className={cn('w-10', 'text-4xl', 'font-medium')}
                   align="center"
@@ -86,7 +86,9 @@ export const GameInfo: FC<{ game: FootballGame }> = ({ game }) => {
                 >
                   {game.visitorScore}
                 </td>
-                <td align="right">{game.expand.visitorTeam.shortName}</td>
+                <td align="right">
+                  {game.expand.visitorTeam.expand.team.shortName}
+                </td>
               </tr>
             </tbody>
           </table>

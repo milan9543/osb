@@ -36,11 +36,11 @@ export const useGameClock = (
 
   return {
     duration: elapsedTime,
-    showClock:
+    isGameRunning:
       period &&
       ['FIRST_HALF', 'SECOND_HALF', 'EXTRA_FIRST', 'EXTRA_SECOND'].includes(
         period
       ),
-    clockString: `${elapsedTime.hours() * 60 + elapsedTime.minutes()}:${elapsedTime.seconds().toString().padStart(2, '0')}`,
+    clockString: `${(elapsedTime.hours() * 60 + elapsedTime.minutes()).toString().padStart(2, '0')}:${elapsedTime.seconds().toString().padStart(2, '0')}`,
   };
 };
