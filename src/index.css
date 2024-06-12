@@ -75,7 +75,7 @@ body {
   * {
     @apply border-border;
   }
-  body {
+  #scoring-layout {
     @apply bg-background text-foreground;
   }
 }

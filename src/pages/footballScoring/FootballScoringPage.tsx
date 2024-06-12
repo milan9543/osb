@@ -8,16 +8,17 @@ import { useFootballData } from './hooks/useFootballData';
 import { useFootballEventData } from './hooks/useFootballEventData';
 import { getPeriodChangedData } from './util/footballHelper';
 import { useFootballGameTeamData } from './hooks/useFootballGameTeamData';
+import { useParams } from '@tanstack/react-router';
 
 export const FootballScoringPage = () => {
-  const id = 'zqdolwb6cetibnc';
+  const { id } = useParams({ strict: false });
 
   const {
     game,
     refetchGame,
     mutate: updatGame,
     updateGameWithEvent,
-  } = useFootballData(id);
+  } = useFootballData(id || '');
 
   const { handleGameTeamChangeByEvent } = useFootballGameTeamData();
 
@@ -29,7 +30,7 @@ export const FootballScoringPage = () => {
   useEffect(() => {
     const unsubscribePromise = pb
       .collection('footballGame')
-      .subscribe(id, () => {
+      .subscribe(id || '', () => {
         refetchGame();
       });
     return () => {
