@@ -79,7 +79,7 @@ export type FootballTeam = PocketbaseFields & {
   };
 };
 
-export type FootballGameTeam = PocketbaseFields & {
+export type FootballGameTeamBase = {
   team: string;
   onField: string[];
   subs: string[];
@@ -88,6 +88,8 @@ export type FootballGameTeam = PocketbaseFields & {
   secondaryColor?: string;
   coachName: string;
 };
+
+export type FootballGameTeam = PocketbaseFields & FootballGameTeamBase;
 
 export type FootballGameTeamExpanded = FootballGameTeam & {
   expand: {

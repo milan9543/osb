@@ -50,3 +50,14 @@ export const getPeriodChangedData = (data: FootballGame): FootballGame => {
     currentPeriodStarted: new Date().toUTCString(),
   };
 };
+
+export const isHomePlayer = (playerId: string, game: FootballGame): boolean => {
+  return game.expand.homeTeam.onField.includes(playerId);
+};
+
+export const isVisitorPlayer = (
+  playerId: string,
+  game: FootballGame
+): boolean => {
+  return game.expand.visitorTeam.onField.includes(playerId);
+};

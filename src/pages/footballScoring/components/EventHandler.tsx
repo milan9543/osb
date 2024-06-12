@@ -80,8 +80,8 @@ const getSelectablePlayers = (
     if (['INJURY', 'SUBSTITUTION'].includes(selectedEventType)) {
       unSearchedArray =
         primaryPlayer.team === game.expand.homeTeam.team
-          ? [...homeSubs]
-          : [...visitorSubs];
+          ? [...(homeSubs || [])]
+          : [...(visitorSubs || [])];
     } else {
       unSearchedArray =
         primaryPlayer.team === game.expand.homeTeam.team

@@ -7,6 +7,7 @@ import { GameInfo } from './components/GameInfo';
 import { useFootballData } from './hooks/useFootballData';
 import { useFootballEventData } from './hooks/useFootballEventData';
 import { getPeriodChangedData } from './util/footballHelper';
+import { useFootballGameTeamData } from './hooks/useFootballGameTeamData';
 
 export const FootballScoringPage = () => {
   const id = 'zqdolwb6cetibnc';
@@ -18,7 +19,12 @@ export const FootballScoringPage = () => {
     updateGameWithEvent,
   } = useFootballData(id);
 
-  const { handleEventAdd } = useFootballEventData(updateGameWithEvent);
+  const { handleGameTeamChangeByEvent } = useFootballGameTeamData();
+
+  const { handleEventAdd } = useFootballEventData((createdEvent) => {
+    updateGameWithEvent(createdEvent);
+    handleGameTeamChangeByEvent(createdEvent, game);
+  });
 
   useEffect(() => {
     const unsubscribePromise = pb
