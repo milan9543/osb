@@ -9,7 +9,7 @@ import { useFootballEventData } from './hooks/useFootballEventData';
 import { getPeriodChangedData } from './util/footballHelper';
 
 export const FootballScoringPage = () => {
-  const id = 'di6qpruvf56fplu';
+  const id = 'zqdolwb6cetibnc';
 
   const {
     game,

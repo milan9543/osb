@@ -33,6 +33,7 @@ export type FootballPlayer = {
   lastName: string;
   dateOfBirth: string;
   number: number;
+  team: string;
 } & PocketbaseFields;
 
 export type FootballGameEvent = {
@@ -63,8 +64,8 @@ export type FootballGame = {
   hasExtraTime: boolean;
   hasPenalties: boolean;
   expand: {
-    homeTeam: FootballTeam;
-    visitorTeam: FootballTeam;
+    homeTeam: FootballGameTeamExpanded;
+    visitorTeam: FootballGameTeamExpanded;
   };
 } & PocketbaseFields;
 
@@ -75,5 +76,24 @@ export type FootballTeam = PocketbaseFields & {
   logo: string;
   expand: {
     players: FootballPlayer[];
+  };
+};
+
+export type FootballGameTeam = PocketbaseFields & {
+  team: string;
+  onField: string[];
+  subs: string[];
+  goneOff: string[];
+  primaryColor: string;
+  secondaryColor?: string;
+  coachName: string;
+};
+
+export type FootballGameTeamExpanded = FootballGameTeam & {
+  expand: {
+    team: FootballTeam;
+    onField: FootballPlayer[];
+    subs: FootballPlayer[];
+    goneOff: FootballPlayer[];
   };
 };

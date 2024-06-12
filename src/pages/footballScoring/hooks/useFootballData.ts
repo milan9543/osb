@@ -8,7 +8,7 @@ export const useFootballData = (id: string) => {
     queryFn: () =>
       pb.collection('footballGame').getOne<FootballGame>(id, {
         expand:
-          'events,homeTeam,visitorTeam,homeTeam.players,visitorTeam.players',
+          'homeTeam.onField,homeTeam.team,homeTeam.subs,visitorTeam.onField,visitorTeam.subs,visitorTeam.team',
       }),
   });
 
@@ -21,9 +21,16 @@ export const useFootballData = (id: string) => {
     if (!data) {
       return;
     }
-    const isHomePlayer = !!data.expand.homeTeam.expand.players.find(
-      (item) => item.id === event.player
+    const isHomePlayer = !!data.expand.homeTeam.onField.find(
+      (id) => id === event.player
     );
+    const isVisitorPlayer = !!data.expand.visitorTeam.onField.find(
+      (id) => id === event.player
+    );
+    if (!isHomePlayer && !isVisitorPlayer) {
+      window.alert('Error, player not found in either teams!');
+    }
+
     let homeScore = data.homeScore;
     let visitorScore = data.visitorScore;
     if (['GOAL', 'PENALTY_SCORED'].includes(event.type)) {

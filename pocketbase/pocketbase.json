@@ -68,14 +68,14 @@
         "schema": [
             {
                 "system": false,
-                "id": "wtavgd6g",
+                "id": "5wawvjh1",
                 "name": "homeTeam",
                 "type": "relation",
                 "required": true,
-                "presentable": true,
+                "presentable": false,
                 "unique": false,
                 "options": {
-                    "collectionId": "fwx90nz6ucq2uws",
+                    "collectionId": "fkenhp0fubs33ff",
                     "cascadeDelete": false,
                     "minSelect": null,
                     "maxSelect": 1,
@@ -84,14 +84,14 @@
             },
             {
                 "system": false,
-                "id": "9jslthxp",
+                "id": "6plwbmdn",
                 "name": "visitorTeam",
                 "type": "relation",
                 "required": true,
-                "presentable": true,
+                "presentable": false,
                 "unique": false,
                 "options": {
-                    "collectionId": "fwx90nz6ucq2uws",
+                    "collectionId": "fkenhp0fubs33ff",
                     "cascadeDelete": false,
                     "minSelect": null,
                     "maxSelect": 1,
@@ -200,14 +200,16 @@
             },
             {
                 "system": false,
-                "id": "1zudhgt6",
-                "name": "gameConfig",
-                "type": "json",
+                "id": "ucwltcoy",
+                "name": "refereeName",
+                "type": "text",
                 "required": false,
                 "presentable": false,
                 "unique": false,
                 "options": {
-                    "maxSize": 2000000
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
                 }
             }
         ],
@@ -333,6 +335,127 @@
         "options": {}
     },
     {
+        "id": "fkenhp0fubs33ff",
+        "name": "footballGameTeam",
+        "type": "base",
+        "system": false,
+        "schema": [
+            {
+                "system": false,
+                "id": "lnaf3qgl",
+                "name": "team",
+                "type": "relation",
+                "required": true,
+                "presentable": true,
+                "unique": false,
+                "options": {
+                    "collectionId": "fwx90nz6ucq2uws",
+                    "cascadeDelete": false,
+                    "minSelect": null,
+                    "maxSelect": 1,
+                    "displayFields": null
+                }
+            },
+            {
+                "system": false,
+                "id": "4qfm4vey",
+                "name": "onField",
+                "type": "relation",
+                "required": true,
+                "presentable": false,
+                "unique": false,
+                "options": {
+                    "collectionId": "c751lq5mxzcnfcs",
+                    "cascadeDelete": false,
+                    "minSelect": null,
+                    "maxSelect": null,
+                    "displayFields": null
+                }
+            },
+            {
+                "system": false,
+                "id": "otm9qjwf",
+                "name": "subs",
+                "type": "relation",
+                "required": false,
+                "presentable": false,
+                "unique": false,
+                "options": {
+                    "collectionId": "c751lq5mxzcnfcs",
+                    "cascadeDelete": false,
+                    "minSelect": null,
+                    "maxSelect": null,
+                    "displayFields": null
+                }
+            },
+            {
+                "system": false,
+                "id": "6lu6knol",
+                "name": "goneOff",
+                "type": "relation",
+                "required": false,
+                "presentable": false,
+                "unique": false,
+                "options": {
+                    "collectionId": "c751lq5mxzcnfcs",
+                    "cascadeDelete": false,
+                    "minSelect": null,
+                    "maxSelect": null,
+                    "displayFields": null
+                }
+            },
+            {
+                "system": false,
+                "id": "fq3wzrm5",
+                "name": "primaryColor",
+                "type": "text",
+                "required": true,
+                "presentable": false,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            },
+            {
+                "system": false,
+                "id": "inuixbtv",
+                "name": "secondaryColor",
+                "type": "text",
+                "required": false,
+                "presentable": false,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            },
+            {
+                "system": false,
+                "id": "x6w3wjaq",
+                "name": "coachName",
+                "type": "text",
+                "required": false,
+                "presentable": false,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            }
+        ],
+        "indexes": [],
+        "listRule": "",
+        "viewRule": "",
+        "createRule": "",
+        "updateRule": "",
+        "deleteRule": "",
+        "options": {}
+    },
+    {
         "id": "c751lq5mxzcnfcs",
         "name": "footballPlayer",
         "type": "base",
@@ -344,7 +467,7 @@
                 "name": "firstName",
                 "type": "text",
                 "required": true,
-                "presentable": false,
+                "presentable": true,
                 "unique": false,
                 "options": {
                     "min": null,
@@ -399,12 +522,28 @@
                 "name": "number",
                 "type": "text",
                 "required": false,
-                "presentable": false,
+                "presentable": true,
                 "unique": false,
                 "options": {
                     "min": null,
                     "max": null,
                     "pattern": ""
+                }
+            },
+            {
+                "system": false,
+                "id": "mvdymn6r",
+                "name": "team",
+                "type": "relation",
+                "required": true,
+                "presentable": true,
+                "unique": false,
+                "options": {
+                    "collectionId": "fwx90nz6ucq2uws",
+                    "cascadeDelete": false,
+                    "minSelect": null,
+                    "maxSelect": 1,
+                    "displayFields": null
                 }
             }
         ],
@@ -446,7 +585,7 @@
                 "unique": false,
                 "options": {
                     "min": null,
-                    "max": 10,
+                    "max": 15,
                     "pattern": ""
                 }
             },
@@ -480,22 +619,6 @@
                     "maxSelect": 1,
                     "maxSize": 5242880,
                     "protected": false
-                }
-            },
-            {
-                "system": false,
-                "id": "ie0t7afj",
-                "name": "players",
-                "type": "relation",
-                "required": false,
-                "presentable": false,
-                "unique": false,
-                "options": {
-                    "collectionId": "c751lq5mxzcnfcs",
-                    "cascadeDelete": false,
-                    "minSelect": null,
-                    "maxSelect": null,
-                    "displayFields": null
                 }
             }
         ],
