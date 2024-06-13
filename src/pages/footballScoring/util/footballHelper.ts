@@ -43,12 +43,27 @@ export const getNextPeriod = (data: FootballGame): FootballPeriod | null => {
 };
 
 export const getPeriodChangedData = (data: FootballGame): FootballGame => {
-  return {
+  const result = {
     ...data,
     currentPeriod: data.currentPeriod ? getNextPeriod(data) : null,
     currentPeriodAddedTime: 0,
-    currentPeriodStarted: new Date().toUTCString(),
   };
+
+  if (!shouldClockBeVisible(data.currentPeriod)) {
+    result.currentPeriodStarted = new Date().toUTCString();
+  }
+  return result;
+};
+
+export const shouldClockBeVisible = (
+  period: FootballPeriod | null
+): boolean => {
+  return (
+    !!period &&
+    ['FIRST_HALF', 'SECOND_HALF', 'EXTRA_FIRST', 'EXTRA_SECOND'].includes(
+      period
+    )
+  );
 };
 
 export const isHomePlayer = (playerId: string, game: FootballGame): boolean => {

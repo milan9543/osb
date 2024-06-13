@@ -1,3 +1,4 @@
+import { shouldClockBeVisible } from '@/pages/footballScoring/util/footballHelper';
 import { FootballPeriod } from '@/types/football';
 import dayjs, { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
@@ -5,15 +6,15 @@ import { useEffect, useState } from 'react';
 const periodElapsedMinutes: Record<FootballPeriod, number> = {
   PRE_GAME: 0,
   FIRST_HALF: 0,
-  HALF_TIME: 45,
+  HALF_TIME: 0,
   SECOND_HALF: 45,
-  GAME_OVER: 90,
+  GAME_OVER: 45,
+  FULL_TIME: 45,
   EXTRA_FIRST: 90,
-  FULL_TIME: 90,
+  EXTRA_HALF_TIME: 90,
   EXTRA_SECOND: 105,
-  EXTRA_HALF_TIME: 105,
+  AFTER_EXTRA_TIME: 105,
   PENALTIES: 120,
-  AFTER_EXTRA_TIME: 120,
 };
 
 export const useGameClock = (
@@ -36,11 +37,7 @@ export const useGameClock = (
 
   return {
     duration: elapsedTime,
-    isGameRunning:
-      period &&
-      ['FIRST_HALF', 'SECOND_HALF', 'EXTRA_FIRST', 'EXTRA_SECOND'].includes(
-        period
-      ),
+    isGameRunning: shouldClockBeVisible(period),
     clockString: `${(elapsedTime.hours() * 60 + elapsedTime.minutes()).toString().padStart(2, '0')}:${elapsedTime.seconds().toString().padStart(2, '0')}`,
   };
 };
