@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import { FootballGame, FootballGameTeam } from '@/types/football';
 import dayjs from 'dayjs';
 import { FC } from 'react';
+import { scoreboardCommonClass } from '../util/classes';
 
 const teamName = cn(
   'font-thin',
@@ -60,19 +61,7 @@ export const Scorebug: FC<{ game: FootballGame }> = ({ game }) => {
       )}
     >
       <div className={cn('relative')}>
-        <div
-          className={cn(
-            'bg-slate-900',
-            'bg-opacity-75',
-            'rounded-lg',
-            'text-white',
-            'border-2',
-            'border-white',
-            'backdrop-blur-xl',
-            'p-[2px]',
-            'z-20'
-          )}
-        >
+        <div className={cn(scoreboardCommonClass, 'p-[2px]', 'z-20')}>
           <table>
             <tr>
               <TeamColorIndicator team={game.expand.homeTeam} />
@@ -92,23 +81,19 @@ export const Scorebug: FC<{ game: FootballGame }> = ({ game }) => {
         <div
           className={cn(
             'absolute',
-            '-bottom-9',
+            scoreboardCommonClass,
+            '-bottom-12',
             'left-1/2',
             '-translate-x-1/2',
-            'h-9',
-            'bg-slate-900',
-            'bg-opacity-75',
+            'h-12',
             'py-1',
-            'px-4',
+            'px-2',
             'flex',
             'justify-center',
-            'border-2',
-            'border-white',
+            'items-center',
             'border-t-0',
-            'rounded-bl-md',
-            'rounded-br-md',
-            'text-white',
-            'backdrop-blur-xl'
+            'rounded-tl-none',
+            'rounded-tr-none'
           )}
         >
           <p
@@ -121,6 +106,22 @@ export const Scorebug: FC<{ game: FootballGame }> = ({ game }) => {
           >
             {clockString}
           </p>
+          <div
+            className={cn(
+              'transition-all',
+              game.currentPeriodAddedTime ? 'w-10' : 'w-0',
+              'overflow-hidden',
+              'bg-white',
+              'text-slate-900',
+              'font-medium',
+              'text-xl',
+              'text-center',
+              'rounded-sm',
+              game.currentPeriodAddedTime ? 'ml-4' : 'm-0'
+            )}
+          >
+            +{game.currentPeriodAddedTime}
+          </div>
         </div>
       </div>
     </div>

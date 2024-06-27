@@ -6,7 +6,18 @@ export const BroadcastLayout: FC<PropsWithChildren> = ({ children }) => {
     <div
       className={cn('w-[1920px]', 'h-[1080px]', 'bg-transparent', 'relative')}
     >
-      <div className={cn('absolute', 'z-[1]')}>{children}</div>
+      <div
+        className={cn(
+          'absolute',
+          'top-0',
+          'bottom-0',
+          'left-0',
+          'right-0',
+          'z-[1]'
+        )}
+      >
+        {children}
+      </div>
 
       <iframe
         className={cn('absolute', 'z-0')}
